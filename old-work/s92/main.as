@@ -55,5 +55,12 @@ jmp [.gop_slf]
 .Format:
 inc r13
 jmp [.gop_slf]
-.gop_slf_after:
-
+.gop_slf_end_after:
+jmp [.gop_slf_end_after]
+.gop_slf_end:
+mov rax, [rbx+8]
+mov rcx, rbx
+mov rdx, r13
+sub rsp, 40
+call [rax]
+add rsp, 40
