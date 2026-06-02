@@ -8,7 +8,7 @@ info dq 0
 info_size dq 0
 
 section .text
-mov [system_handle], rdx
+mov [system_table], rdx
 mov [image_handle], rcx
 mov r13, rdx
 mov r13, [r13+0x58]
@@ -20,15 +20,15 @@ sub rsp, 40
 call [rax]
 ;add rsp, 40
 cmp rax, 0
-jna fail
+jne [fail]
 mov rbx, [r8]
 sub rsp, 8
 xor r13, r13
 mov r14, [rbx+24]
 mov r14, dword [r14]
-l1:
+.gop_slf:
 cmp r13, r14
-je [e1]
+je [.gop_slf_end_after]
 lea rcx, [rbx]
 mov rdx, r13
 lea r8, [rel info_size]
@@ -38,11 +38,22 @@ call [rax]
 mov rsi, [rel info]
 mov edi, dword [rsi+4]
 cmp edi, 640
-jne [Horizon]
-mob edi, dword [rsi+8]
+jne [.Horizon]
+mov edi, dword [rsi+8]
 cmp edi, 480
-jne [Vertical]
+jne [.Vertical]
 mov edi, dword [rsi+16]
 cmp edi, 1
-jne [Format]
+jne [.Format]
+jmp [.gop_slf_end]
+.Horizon:
 inc r13
+jmp [.gop_slf]
+.Vertical:
+inc r13
+jmp [.gop_slf]
+.Format:
+inc r13
+jmp [.gop_slf]
+.gop_slf_after:
+
