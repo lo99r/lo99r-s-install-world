@@ -23,6 +23,7 @@ cmp rax, 0
 jne [fail]
 mov rbx, [r8]
 sub rsp, 8
+push r13
 xor r13, r13
 mov r14, [rbx+24]
 mov r14, dword [r14]
@@ -64,3 +65,5 @@ mov rdx, r13
 sub rsp, 40
 call [rax]
 add rsp, 40
+pop r13
+
